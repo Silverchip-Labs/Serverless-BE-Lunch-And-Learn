@@ -1,0 +1,64 @@
+service: lunch
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+
+# https://www.serverless.com/blog/serverless-auth-with-aws-http-apis
+functions:
+  auth: 
+    handler: auth.handler
+  getPosts:
+    handler: api.getPosts
+    events: 
+      - http:
+        path: api/posts
+        method: get        
+  getPost:
+    handler: api.getPost
+    events:
+      - http:
+        path: posts/{id}
+        method: get
+        request:
+          parameters:
+            paths:
+              id: true
+  addPost:
+    handler:
+    events: 
+      - http: 
+          path: api/posts
+          method: post
+          authorizer: auth
+          cors: true
+
+
+resources: 
+  Resources:
+    blogposts:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: title
+            AttributeType: S
+          - AttributeName: text
+            AttributeType: S
+          - AttributeName: image
+            AttributeType: S
+        KeySchema:
+          - AttributeName: title
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
