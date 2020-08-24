@@ -1,7 +1,10 @@
+org: silverchiprob
+app: lunch
 service: lunch
 provider:
   name: aws
   runtime: nodejs12.x
+  region: eu-west-1
   environment:
     DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
   iamRoleStatements:
@@ -20,20 +23,20 @@ functions:
     handler: api.getPosts
     events: 
       - http:
-        path: api/posts
-        method: get        
+          path: api/posts
+          method: get        
   getPost:
     handler: api.getPost
     events:
       - http:
-        path: posts/{id}
-        method: get
-        request:
-          parameters:
-            paths:
-              id: true
+          path: posts/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
   addPost:
-    handler:
+    handler: api.addPost
     events: 
       - http: 
           path: api/posts
@@ -47,20 +50,13 @@ resources:
     blogposts:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: usersTable
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: N
-          - AttributeName: title
-            AttributeType: S
-          - AttributeName: text
-            AttributeType: S
-          - AttributeName: image
-            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
