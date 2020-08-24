@@ -35,6 +35,16 @@ module.exports.addPost = (event, context, callback) => {
     // validate?
     // save post
     // return success/fail
+    const responseBody = {"text": "hello, lambda"}
+    var response = {
+        "statusCode": 200,
+        "headers": {
+            "my_header": "my_value"
+        },
+        "body": JSON.stringify(responseBody),
+        "isBase64Encoded": false
+    };
+    callback(null, response);
 }
 
 // all
