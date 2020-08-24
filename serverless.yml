@@ -49,6 +49,8 @@ resources:
       Properties:
         TableName: usersTable
         AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
           - AttributeName: title
             AttributeType: S
           - AttributeName: text
@@ -56,7 +58,7 @@ resources:
           - AttributeName: image
             AttributeType: S
         KeySchema:
-          - AttributeName: title
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
