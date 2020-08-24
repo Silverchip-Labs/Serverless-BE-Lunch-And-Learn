@@ -1,12 +1,15 @@
 const AWS = require('aws-sdk');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+// set by serverless.yml
 const tableName = process.env.DYNAMODB_TABLE
 
-const getPost = async (title) => {
+const getPost = async (id) => {
     const {item: post} = await dynamoDb.get({
         TableName: tableName,
-        key: title,
+        key: {
+            id
+        },
     });
     return post;
 }
@@ -36,9 +39,12 @@ module.exports.addPost = (event, context, callback) => {
 
 // all
 module.exports.getPosts = (event, context, callback) => {
-
+    // get posts
+    // return
 }
 // single
 module.exports.getPost = (event, context, callback) => {
-
+    // get id from event
+    // get post
+    // return
 }
