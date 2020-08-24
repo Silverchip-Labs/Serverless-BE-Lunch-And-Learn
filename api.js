@@ -1,41 +1,67 @@
 const AWS = require('aws-sdk');
+const uuid = require('uuid');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-// set by serverless.yml
 const tableName = process.env.DYNAMODB_TABLE
 
-const getPost = async (id) => {
-    const {item: post} = await dynamoDb.get({
+const getPost = async (id, callback) => {
+    const {item: post} = dynamoDb.get({
         TableName: tableName,
-        key: {
-            id
-        },
+        Key: { id },
+    }, (err, data) => {
+        if (err) {
+            callback(err);
+        }
+        if (data) {
+            const response = successResponse(data);
+            callback(null, response);
+        }
     });
     return post;
 }
 
-const getPosts = async () => {
-    const posts = await dynamoDb.scan({
+const getPosts =  (callback) => {
+    const posts = dynamoDb.scan({
         TableName: tableName,
+    }, (err, data) => {
+        if (err) {
+            callback(err);
+        }
+        if (data) {
+            const response = successResponse(data);
+            callback(null, response);
+        }
     });
     console.log({posts});
 }
 
-const savePost = async (post) => {
-    const result = await dynamoDb.put({
+const savePost = async ({title, body, image}, callback) => {
+    const id = `id-${uuid.v4()}`;
+    dynamoDb.put({
         TableName: tableName,
-        Item: post,
+        Item: {
+            "id": id,
+            "title": title,
+            "body" : body,
+            "image": image,
+            createdAt: new Date().toISOString(),
+        },
+    }, (err, data) => {
+        if (err) { 
+            callback(err);
+        }
+        if (data) {
+            const response = successResponse();
+            callback(null, response);
+        }
     });
-    console.log({result});
 }
 
 // create
 module.exports.addPost = (event, context, callback) => {
-    // get post from body
-    // validate?
-    // save post
-    // return success/fail
     const responseBody = {"text": "hello, lambda"}
+    const { title, body, image } = event.body;
+    savePost({title, body, image}, callback);
     var response = {
         "statusCode": 200,
         "headers": {
@@ -49,12 +75,23 @@ module.exports.addPost = (event, context, callback) => {
 
 // all
 module.exports.getPosts = (event, context, callback) => {
-    // get posts
-    // return
+    getPosts(callback);
 }
 // single
 module.exports.getPost = (event, context, callback) => {
-    // get id from event
-    // get post
-    // return
+    const { id } = event.pathParameters;
+    getPost(id, callback);
+}
+
+const successResponse = (body) => {
+    var response = {
+        "statusCode": 200,
+        "headers": {
+            "my_header": "my_value"
+        },
+        "isBase64Encoded": false,
+        body: "{}",
+    };
+    if (body) response.body = JSON.stringify(body);
+    return response;
 }

@@ -1,0 +1,17 @@
+{
+      "resource": "/api/posts",
+      "path": "/api/posts",
+      "httpMethod": "POST",
+      "headers": { "authorization": " bearer x" },
+      "requestContext": {
+        "resourceId": "cbsp09",
+        "resourcePath": "/api/posts",
+        "httpMethod": "POST"
+      },
+      "body": {
+        "title": "My first post",
+        "body": "Lorem ipsum dolor sit amet, te meis munere per. In lorem ceteros his. Pri te ipsum altera putent. Dolores suavitate te eum, bonorum expetenda eu est. Qui et nostro facilisi scripserit. \n Te dicant semper salutatus quo. Cu duo nobis albucius, est id case corpora. Pri ne postea legimus instructior, ne iudicabit persecuti adolescens sit. Mel ea solet moderatius honestatis. \n Nam consul persius admodum et, his te option petentium, cu nam vero laoreet percipit. Ad quo tation eligendi. Ad graeci eloquentiam ius. Postea oportere in ius, eos iudico temporibus te. Vim in tale argumentum, errem definitionem cu nam, graeco quaeque urbanitas eos ad.\n Ei diam prodesset ullamcorper sea. Nam an tibique probatus, et falli aliquam recteque per. Tota falli tantas eos ne, ne vim ferri laudem. Pro cu aliquam detraxit liberavisse, vel cu porro nostrum insolens. Omnesque sensibus assueverit eam cu, his an consul labores. Est novum nostrud no.\n Sit eu choro pericula mediocritatem. Qui at viris iudicabit. Quo corpora democritum no. Dicat soleat fuisset id est, vitae doming aliquando te pri.",
+        "image": "http://cdn.akc.org/content/article-body-image/newfoundland_dog_pictures.jpg"
+        },
+      "isBase64Encoded": false
+    }
