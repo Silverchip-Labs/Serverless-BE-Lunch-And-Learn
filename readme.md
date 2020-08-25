@@ -12,4 +12,17 @@
 - Architecture/project structure for larger-scale API could be tough (maybe? this is the case for anything new though)
 - Not built for long-running processes - large scale updates, automations etc. Lambdas have a max timeout
 - Potential 'cold start' time for some languages (Cloudfront & node apparently has a 5ms startup time due to the Chrome V8 engine, but Node APIs can have their own challenges - and not all of them are solved by TypeScript.)
-- Can be harder to accurately test locally
+- Can be harder to accurately test locally 
+
+## Example use cases
+
+### API
+
+
+### DB
+[Article](https://medium.com/better-programming/5-real-life-use-cases-for-dynamodb-a152a9d152e2)
+- Fast searchable db
+- Inconsistent schema / object-based storage
+- Time-sensitive data via Time To Live - data can be set to expire (confidentiality, space-saving, news/social feeds)
+- Game sessions/save data with unusual shapes
+- Duolingo stores 31 billion items on DynamoDB - schemaless means data can be heavily personalised for user
