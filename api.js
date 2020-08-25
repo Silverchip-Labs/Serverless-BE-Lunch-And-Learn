@@ -59,7 +59,7 @@ const savePost = ({title, body, image}, callback) => {
 
 // create
 module.exports.addPost = (event, context, callback) => {
-    const { title, body, image } = event.body;
+    const { title, body, image } = JSON.parse(event.body);
     savePost({title, body, image}, callback);
 }
 
