@@ -4,16 +4,14 @@ module.exports.handler = async function (event) {
     try {
         const token = getToken(event.authorizationToken);
         jwt.verify(token, process.env.JWT_SECRET);
-
         return allowPolicy(event.methodArn);
     } catch (error) {
-        console.error(error.message);
         return denyAllPolicy();
     }
 };
 
 function getToken(header) {
-    let token = header.split(' ')[1];
+    const token = header.split(' ')[1];
     return token;
 }
 

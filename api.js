@@ -4,7 +4,7 @@ const uuid = require('uuid');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const tableName = process.env.DYNAMODB_TABLE
 
-const getPost = async (id, callback) => {
+const getPost = (id, callback) => {
     const {item: post} = dynamoDb.get({
         TableName: tableName,
         Key: { id },
@@ -20,7 +20,7 @@ const getPost = async (id, callback) => {
     return post;
 }
 
-const getPosts =  (callback) => {
+const getPosts = (callback) => {
     const posts = dynamoDb.scan({
         TableName: tableName,
     }, (err, data) => {
@@ -35,7 +35,7 @@ const getPosts =  (callback) => {
     console.log({posts});
 }
 
-const savePost = async ({title, body, image}, callback) => {
+const savePost = ({title, body, image}, callback) => {
     const id = `id-${uuid.v4()}`;
     dynamoDb.put({
         TableName: tableName,
@@ -59,18 +59,8 @@ const savePost = async ({title, body, image}, callback) => {
 
 // create
 module.exports.addPost = (event, context, callback) => {
-    const responseBody = {"text": "hello, lambda"}
     const { title, body, image } = event.body;
     savePost({title, body, image}, callback);
-    var response = {
-        "statusCode": 200,
-        "headers": {
-            "my_header": "my_value"
-        },
-        "body": JSON.stringify(responseBody),
-        "isBase64Encoded": false
-    };
-    callback(null, response);
 }
 
 // all
