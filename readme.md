@@ -17,7 +17,8 @@
 ## Example use cases
 
 ### API
-
+ - Standard REST API with automatic and effective scaling
+ - Microservice based 
 
 ### DB
 [Article](https://medium.com/better-programming/5-real-life-use-cases-for-dynamodb-a152a9d152e2)
